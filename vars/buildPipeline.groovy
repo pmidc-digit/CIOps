@@ -16,6 +16,9 @@ spec:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug-v0.15.0
     imagePullPolicy: IfNotPresent
+    securityContext:
+      runAsUser: 0
+      privileged: true
     command:
     - /busybox/cat
     tty: true
