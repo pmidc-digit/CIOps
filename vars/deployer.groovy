@@ -38,6 +38,9 @@ spec:
             stage('Export Kubeconfig Secret') {
                 container(name: 'egov-deployer', shell: '/bin/sh') {
                     sh """
+                        apk add --no-cache curl jq gnupg
+                        curl -Lo /usr/local/bin/sops https://github.com/getsops/sops/releases/download/v3.7.3/sops-v3.7.3.linux
+                        chmod +x /usr/local/bin/sops
                         # Create the .kube directory
                         mkdir -p /root/.kube
                         
