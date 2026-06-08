@@ -32,7 +32,17 @@ spec:
         valueFrom:
           secretKeyRef:
             name: jenkins-credentials
-            key: gitReadAccessToken                                                       
+            key: gitReadAccessToken   
+      - name: NEXUS_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: nexus-secret
+            key: username
+      - name: NEXUS_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: nexus-secret
+            key: password
     volumeMounts:
       - name: jenkins-docker-cfg
         mountPath: /root/.docker
@@ -124,6 +134,8 @@ spec:
                                     /kaniko/executor -f `pwd`/${buildConfig.getDockerFile()} -c `pwd`/${buildConfig.getContext()} \
                                     --build-arg WORK_DIR=${workDir} \
                                     --build-arg token=\$GIT_ACCESS_TOKEN \
+                                    --build-arg nexusUsername=$NEXUS_USERNAME \
+                                    --build-arg nexusPassword=$NEXUS_PASSWORD  \
                                     --cache=true --cache-dir=/cache \
                                     --single-snapshot=true \
                                     --snapshotMode=time \
@@ -140,6 +152,8 @@ spec:
                                     /kaniko/executor -f `pwd`/${buildConfig.getDockerFile()} -c `pwd`/${buildConfig.getContext()} \
                                     --build-arg WORK_DIR=${workDir} \
                                     --build-arg token=\$GIT_ACCESS_TOKEN \
+                                    --build-arg nexusUsername=$NEXUS_USERNAME \
+                                    --build-arg nexusPassword=$NEXUS_PASSWORD  \
                                     --cache=true --cache-dir=/cache \
                                     --single-snapshot=true \
                                     --snapshotMode=time \
